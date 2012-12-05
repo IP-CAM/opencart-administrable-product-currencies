@@ -136,8 +136,6 @@
     <!-- catalog: begin -->
 
         <file name="catalog/controller/product/*.php">
-
-            <!-- all product controllers -->
             <operation error="skip">
                 <search position="replace">
                     <![CDATA[
@@ -146,7 +144,8 @@
                 </search>
                 <add>
                     <![CDATA[
-                        $price = $this->currency->format($this->tax->calculate($this->currency->convert($result['price'], $result['currency'], $this->config->get('config_currency')), $result['tax_class_id'], $this->config->get('config_tax')));
+                        $price = '<div class="main-currency">' . $this->currency->format($this->tax->calculate($this->currency->convert($result['price'], $result['currency'], $this->config->get('config_currency')), $result['tax_class_id'], $this->config->get('config_tax')), $this->config->get('config_currency')) . '</div>';
+                        $price.= '<div class="sub-currency-1">' . $this->currency->format($this->tax->calculate($this->currency->convert($result['price'], $result['currency'], 'EUR'), $result['tax_class_id'], $this->config->get('config_tax')), 'EUR', 1.0000000) . '</div>';
                     ]]>
                 </add>
             </operation>
@@ -158,12 +157,12 @@
                 </search>
                 <add>
                     <![CDATA[
-                        $special = $this->currency->format($this->tax->calculate($this->currency->convert($result['special'], $result['currency'], $this->config->get('config_currency')), $result['tax_class_id'], $this->config->get('config_tax')));
+                        $special = '<div class="main-currency">' . $this->currency->format($this->tax->calculate($this->currency->convert($result['special'], $result['currency'], $this->config->get('config_currency')), $result['tax_class_id'], $this->config->get('config_tax')), $this->config->get('config_currency')) . '</div>';
+                        $special.= '<div class="sub-currency-1">' . $this->currency->format($this->tax->calculate($this->currency->convert($result['special'], $result['currency'], $this->config->get('config_currency')), $result['tax_class_id'], $this->config->get('config_tax')), 'EUR', 1.0000000) . '</div>';
                     ]]>
                 </add>
             </operation>
 
-            <!-- product page -->
             <operation error="skip">
                 <search position="replace">
                     <![CDATA[
@@ -172,7 +171,8 @@
                 </search>
                 <add>
                     <![CDATA[
-                        $this->data['price'] = $this->currency->format($this->tax->calculate($this->currency->convert($product_info['price'], $product_info['currency'], $this->config->get('config_currency')), $product_info['tax_class_id'], $this->config->get('config_tax')));
+                        $this->data['price'] = '<div class="main-currency">' . $this->currency->format($this->tax->calculate($this->currency->convert($product_info['price'], $product_info['currency'], $this->config->get('config_currency')), $product_info['tax_class_id'], $this->config->get('config_tax')), $this->config->get('config_currency')) . '</div>';
+                        $this->data['price'].= '<div class="sub-currency-1">' . $this->currency->format($this->tax->calculate($this->currency->convert($product_info['price'], $product_info['currency'], 'EUR'), $product_info['tax_class_id'], $this->config->get('config_tax')), 'EUR', 1.0000000) . '</div>';
                     ]]>
                 </add>
             </operation>
@@ -184,11 +184,11 @@
                 </search>
                 <add>
                     <![CDATA[
-                        $this->data['special'] = $this->currency->format($this->tax->calculate($this->currency->convert($product_info['special'], $product_info['currency'], $this->config->get('config_currency')), $product_info['tax_class_id'], $this->config->get('config_tax')));
+                        $this->data['special'] = '<div class="main-currency">' . $this->currency->format($this->tax->calculate($this->currency->convert($product_info['special'], $product_info['currency'], $this->config->get('config_currency')), $result['tax_class_id'], $this->config->get('config_tax')), $this->config->get('config_currency')) . '</div>';
+                        $this->data['special'].= '<div class="sub-currency-1">' . $this->currency->format($this->tax->calculate($this->currency->convert($product_info['special'], $product_info['currency'], 'EUR'), $result['tax_class_id'], $this->config->get('config_tax')), 'EUR', 1.0000000) . '</div>';
                     ]]>
                 </add>
             </operation>
-
         </file>
 
         <file name="catalog/controller/module/*.php">
@@ -200,7 +200,8 @@
                 </search>
                 <add>
                     <![CDATA[
-                        $price = $this->currency->format($this->tax->calculate($this->currency->convert($result['price'], $result['currency'], $this->config->get('config_currency')), $result['tax_class_id'], $this->config->get('config_tax')));
+                        $price = '<div class="main-currency">' . $this->currency->format($this->tax->calculate($this->currency->convert($result['price'], $result['currency'], $this->config->get('config_currency')), $result['tax_class_id'], $this->config->get('config_tax')), $this->config->get('config_currency')) . '</div>';
+                        $price.= '<div class="sub-currency-1">' . $this->currency->format($this->tax->calculate($this->currency->convert($result['price'], $result['currency'], 'EUR'), $result['tax_class_id'], $this->config->get('config_tax')), 'EUR', 1.0000000) . '</div>';
                     ]]>
                 </add>
             </operation>
@@ -212,11 +213,155 @@
                 </search>
                 <add>
                     <![CDATA[
-                        $special = $this->currency->format($this->tax->calculate($this->currency->convert($result['special'], $result['currency'], $this->config->get('config_currency')), $result['tax_class_id'], $this->config->get('config_tax')));
+                        $special = '<div class="main-currency">' . $this->currency->format($this->tax->calculate($this->currency->convert($result['special'], $result['currency'], $this->config->get('config_currency')), $result['tax_class_id'], $this->config->get('config_tax')), $this->config->get('config_currency')) . '</div>';
+                        $special.= '<div class="sub-currency-1">' . $this->currency->format($this->tax->calculate($this->currency->convert($result['special'], $result['currency'], 'EUR'), $result['tax_class_id'], $this->config->get('config_tax')), 'EUR', 1.0000000) . '</div>';
                     ]]>
                 </add>
             </operation>
         </file>
+
+
+
+        <!-- checkout support:begin -->
+
+        <file name="catalog/controller/checkout/confirm.php">
+            <operation>
+                <search position="after">
+                    <![CDATA[
+                        'price'      => $product['price'],
+                    ]]>
+                </search>
+                <add>
+                    <![CDATA[
+                        'currency'      => $product['currency'],
+                    ]]>
+                </add>
+            </operation>
+
+            <operation>
+                <search position="replace">
+                    <![CDATA[
+                        'price'      => $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax'))),
+                    ]]>
+                </search>
+                <add>
+                    <![CDATA[
+                        'price'      => $this->currency->format($this->tax->calculate($this->currency->convert($product['price'], $product['currency'], $this->config->get('config_currency')), $product['tax_class_id'], $this->config->get('config_tax'))),
+                    ]]>
+                </add>
+            </operation>
+            <operation>
+                <search position="replace">
+                    <![CDATA[
+                        'total'      => $this->currency->format($this->tax->calculate($product['total'], $product['tax_class_id'], $this->config->get('config_tax'))),
+                    ]]>
+                </search>
+                <add>
+                    <![CDATA[
+                        'total'      => $this->currency->format($this->tax->calculate($this->currency->convert($product['total'], $product['currency'], $this->config->get('config_currency')), $product['tax_class_id'], $this->config->get('config_tax'))),
+                    ]]>
+                </add>
+            </operation>
+        </file>
+
+        <!-- checkout support:end -->
+
+
+        <!-- sub_total support:begin -->
+
+        <file name="system/library/cart.php">
+            <operation>
+                <search position="after">
+                    <![CDATA[
+                        $this->data[$key] = array(
+                    ]]>
+                </search>
+                <add>
+                    <![CDATA[
+                        'currency' => $product_query->row['currency'],
+                    ]]>
+                </add>
+            </operation>
+        </file>
+
+        <file name="catalog/model/total/sub_total.php">
+            <operation>
+                <search position="replace">
+                    <![CDATA[
+                        $sub_total = $this->cart->getSubTotal();
+                    ]]>
+                </search>
+                <add>
+                    <![CDATA[
+                        $sub_total = 0;
+
+                        foreach ($this->cart->getProducts() as $product) {
+                            $sub_total += $this->currency->convert($product['total'], $product['currency'], $this->config->get('config_currency'));
+                        }
+                    ]]>
+                </add>
+            </operation>
+        </file>
+
+        <!-- sub_total support:end -->
+
+
+        <!-- ocu_cart support:begin -->
+        <!--
+
+        <file name="catalog/controller/checkout/ocu_cart.php">
+            <operation>
+                <search position="replace">
+                    <![CDATA[
+                        $price = $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')));
+                    ]]>
+                </search>
+                <add>
+                    <![CDATA[
+                        $price = $this->currency->format($this->tax->calculate($this->currency->convert($product['price'], $product['currency'], $this->config->get('config_currency')), $product['tax_class_id'], $this->config->get('config_tax')));
+                    ]]>
+                </add>
+            </operation>
+            <operation>
+                <search position="replace">
+                    <![CDATA[
+                        $total = $this->currency->format($this->tax->calculate($product['total'], $product['tax_class_id'], $this->config->get('config_tax')));
+                    ]]>
+                </search>
+                <add>
+                    <![CDATA[
+                        $total = $this->currency->format($this->tax->calculate($this->currency->convert($product['total'], $product['currency'], $this->config->get('config_currency')), $product['tax_class_id'], $this->config->get('config_tax')));
+                    ]]>
+                </add>
+            </operation>
+            <operation>
+                <search position="replace">
+                    <![CDATA[
+                        $price = $this->currency->format($this->tax->calculate($result['price'], $result['tax_class_id'], $this->config->get('config_tax')));
+                    ]]>
+                </search>
+                <add>
+                    <![CDATA[
+                        $price = $this->currency->format($this->tax->calculate($this->currency->convert($result['price'], $result['currency'], $this->config->get('config_currency')), $result['tax_class_id'], $this->config->get('config_tax')));
+                    ]]>
+                </add>
+            </operation>
+            <operation>
+                <search position="replace">
+                    <![CDATA[
+                        $total = $this->currency->format($this->tax->calculate($result['total'], $result['tax_class_id'], $this->config->get('config_tax')));
+                    ]]>
+                </search>
+                <add>
+                    <![CDATA[
+                        $total = $this->currency->format($this->tax->calculate($this->currency->convert($result['total'], $result['currency'], $this->config->get('config_currency')), $result['tax_class_id'], $this->config->get('config_tax')));
+                    ]]>
+                </add>
+            </operation>
+        </file>
+
+        -->
+        <!-- ocu_cart support:end -->
 
     <!-- catalog: end -->
 
