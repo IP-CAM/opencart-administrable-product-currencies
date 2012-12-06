@@ -222,6 +222,39 @@
 
 
 
+        <!-- cart support:begin -->
+
+        <file name="catalog/controller/checkout/cart.php">
+
+            <operation>
+                <search position="replace">
+                    <![CDATA[
+                        $price = $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')));
+                    ]]>
+                </search>
+                <add>
+                    <![CDATA[
+                        $price = $this->currency->format($this->tax->calculate($this->currency->convert($product['price'], $product['currency'], $this->config->get('config_currency')), $product['tax_class_id'], $this->config->get('config_tax')));
+                    ]]>
+                </add>
+            </operation>
+            <operation>
+                <search position="replace">
+                    <![CDATA[
+                        $total = $this->currency->format($this->tax->calculate($product['total'], $product['tax_class_id'], $this->config->get('config_tax')));
+                    ]]>
+                </search>
+                <add>
+                    <![CDATA[
+                        $total = $this->currency->format($this->tax->calculate($this->currency->convert($product['total'], $product['currency'], $this->config->get('config_currency')), $product['tax_class_id'], $this->config->get('config_tax')));
+                    ]]>
+                </add>
+            </operation>
+        </file>
+
+        <!-- cart support:end -->
+
+
         <!-- checkout support:begin -->
 
         <file name="catalog/controller/checkout/confirm.php">
@@ -308,7 +341,6 @@
 
         <!-- ocu_cart support:begin -->
         <!--
-
         <file name="catalog/controller/checkout/ocu_cart.php">
             <operation>
                 <search position="replace">
@@ -359,7 +391,6 @@
                 </add>
             </operation>
         </file>
-
         -->
         <!-- ocu_cart support:end -->
 
